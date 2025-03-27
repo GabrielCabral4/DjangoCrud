@@ -1,0 +1,31 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if form.instance.pk %}Editar{% else %}Criar{% endif %} Tarefa</title>
+    <link href="{% static 'tarefas/css/styles.css' %}" rel="stylesheet">
+</head>
+<body class="bg-gray-50 min-h-screen flex justify-center items-center">
+
+    <!-- Formulário de Tarefa -->
+    <div class="bg-white shadow-lg rounded-lg p-8 w-96">
+        <h1 class="text-2xl font-semibold text-gray-800 mb-6">{% if form.instance.pk %}Editar{% else %}Criar{% endif %} Tarefa</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-4">
+                {{ form.as_p }}
+            </div>
+            <button type="submit" class="bg-sky-500 text-white px-6 py-2 rounded-md hover:bg-sky-700 transition duration-300 w-full">
+                Salvar
+            </button>
+        </form>
+        <a href="{% url 'listar_tarefas' %}" class="block text-center text-blue-500 hover:text-blue-700 transition duration-300 mt-4">
+            Voltar para a lista de tarefas
+        </a>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,64 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Tarefas</title>
+    <link href="{% static 'tarefas/css/styles.css' %}" rel="stylesheet">
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+    <!-- Container Principal -->
+    <div class="container mx-auto px-6 py-8">
+
+        <!-- Título -->
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-4xl font-bold text-center text-blue-600 mb-8">Gerenciador de Tarefas</h1>
+
+            <!-- Botão Nova Tarefa -->
+            <a href="{% url 'criar_tarefa' %}" class="bg-green-600 text-white px-6 py-3 rounded-full hover:bg-green-700 transition duration-300 inline-block mb-6 shadow-md">
+                + Nova Tarefa
+            </a>
+
+            <!-- Tabela de Tarefas -->
+            <div class="bg-white shadow-lg rounded-lg p-6">
+                <table class="w-full border-collapse text-gray-700">
+                    <thead>
+                        <tr class="bg-blue-100">
+                            <th class="border p-3 text-left font-medium">Tarefa</th>
+                            <th class="border p-3 text-left font-medium">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for tarefa in tarefas %}
+                        <tr class="hover:bg-gray-50 transition duration-200">
+                            <td class="border p-3">{{ tarefa.titulo }}</td>
+                            <td class="border p-3 space-x-2">
+                                <a href="{% url 'editar_tarefa' tarefa.id %}" 
+                                   class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300">
+                                    Editar
+                                </a>
+                                <a href="{% url 'deletar_tarefa' tarefa.id %}" 
+                                   class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300">
+                                    Excluir
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <!-- Mensagem caso não haja tarefas -->
+                {% if not tarefas %}
+                <div class="bg-yellow-100 border-l-4 border-yellow-500 p-4 text-yellow-700 mt-6 rounded-md">
+                    Nenhuma tarefa encontrada. Cadastre sua primeira tarefa!
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
