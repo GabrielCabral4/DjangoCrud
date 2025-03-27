@@ -4,6 +4,7 @@ module.exports = {
     './tarefas/templates/tarefas/*.html',
     './templates/**/*.html',  // Adiciona suporte para templates em outras pastas
     './*/templates/**/*.html',  // Suporta templates em qualquer app do Django
+    './tarefas/static/tarefas/css/input.css'
   ],
   theme: {
     extend: {
@@ -16,7 +17,6 @@ module.exports = {
     }
   },
   plugins: [
-    // Você pode adicionar plugins do Tailwind aqui se necessário
-    // Exemplo: require('@tailwindcss/forms')
+      require('@tailwindcss/line-clamp'),
   ],
 }

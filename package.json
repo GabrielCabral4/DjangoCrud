@@ -4,10 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "tailwind:build": "tailwindcss -i ./tarefas/templates/tarefas/input.css -o ./tarefas/static/output.css",
-    "tailwind:watch": "tailwindcss -i ./tarefas/templates/tarefas/input.css -o ./tarefas/static/output.css --watch",
     "dev": "tailwindcss -i ./tarefas/static/tarefas/css/input.css -o ./tarefas/static/tarefas/css/styles.css --watch",
-    "build": "tailwindcss -i ./tarefas/static/tarefas/css/input.css -o ./tarefas/static/tarefas/css/styles.css --minify"
+    "build:css": "tailwindcss -i ./tarefas/static/tarefas/css/input.css -o ./tarefas/static/tarefas/css/style.css"
   },
   "keywords": [],
   "author": "",
@@ -18,6 +16,8 @@
     "tailwindcss": "^4.0.17"
   },
   "dependencies": {
+    "@tailwindcss/cli": "^4.0.17",
+    "@tailwindcss/line-clamp": "^0.4.4",
     "browserslist": "^4.24.4",
     "caniuse-lite": "^1.0.30001707",
     "electron-to-chromium": "^1.5.125",
@@ -31,5 +31,13 @@
     "source-map-js": "^1.2.1",
     "update-browserslist-db": "^1.1.3"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GabrielCabral4/DjangoCrud.git"
+  },
+  "bugs": {
+    "url": "https://github.com/GabrielCabral4/DjangoCrud/issues"
+  },
+  "homepage": "https://github.com/GabrielCabral4/DjangoCrud#readme",
   "description": ""
 }

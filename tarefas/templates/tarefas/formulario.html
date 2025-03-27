@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% if form.instance.pk %}Editar{% else %}Criar{% endif %} Tarefa</title>
-    <link href="{% static 'tarefas/css/styles.css' %}" rel="stylesheet">
+    <link href="{% static 'tarefas/css/style.css' %}" rel="stylesheet">
 </head>
 <body class="bg-gray-50 min-h-screen flex justify-center items-center">
 
@@ -16,7 +16,23 @@
         <form method="post">
             {% csrf_token %}
             <div class="mb-4">
-                {{ form.as_p }}
+                <label for="titulo" class="block text-gray-700 text-sm font-bold mb-2">Título</label>
+                <input 
+                    type="text" 
+                    id="titulo" 
+                    name="titulo" 
+                    class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:border-blue-500"
+                    placeholder="Digite o título"
+                >
+            </div>
+            <div class="mb-4">
+                <label for="descricao" class="block text-gray-700 text-sm font-bold mb-2">Descrição</label>
+                <textarea 
+                    id="descricao" 
+                    name="descricao" 
+                    class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:border-blue-500"
+                    placeholder="Digite a descrição"
+                ></textarea>
             </div>
             <button type="submit" class="bg-sky-500 text-white px-6 py-2 rounded-md hover:bg-sky-700 transition duration-300 w-full">
                 Salvar
