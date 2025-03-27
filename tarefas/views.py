@@ -29,6 +29,7 @@ def editar_tarefa(request, id):
 
     else:
         form = TarefaForm(instance=tarefa)
+        
     return render(request, 'tarefas/formulario.html', {'form': form})
 
 

@@ -16,27 +16,20 @@
         <form method="post">
             {% csrf_token %}
             <div class="mb-4">
-                <label for="titulo" class="block text-gray-700 text-sm font-bold mb-2">Título</label>
-                <input 
-                    type="text" 
-                    id="titulo" 
-                    name="titulo" 
-                    class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:border-blue-500"
-                    placeholder="Digite o título"
-                >
+                {{ form.titulo.label_tag }}
+                {{ form.titulo }}
+                {% if form.titulo.errors %}
+                    <div class="text-red-500">{{ form.titulo.errors }}</div>
+                {% endif %}
             </div>
             <div class="mb-4">
-                <label for="descricao" class="block text-gray-700 text-sm font-bold mb-2">Descrição</label>
-                <textarea 
-                    id="descricao" 
-                    name="descricao" 
-                    class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:border-blue-500"
-                    placeholder="Digite a descrição"
-                ></textarea>
+                {{ form.descricao.label_tag }}
+                {{ form.descricao }}
+                {% if form.descricao.errors %}
+                    <div class="text-red-500">{{ form.descricao.errors }}</div>
+                {% endif %}
             </div>
-            <button type="submit" class="bg-sky-500 text-white px-6 py-2 rounded-md hover:bg-sky-700 transition duration-300 w-full">
-                Salvar
-            </button>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Salvar</button>
         </form>
         <a href="{% url 'listar_tarefas' %}" class="block text-center text-blue-500 hover:text-blue-700 transition duration-300 mt-4">
             Voltar para a lista de tarefas
