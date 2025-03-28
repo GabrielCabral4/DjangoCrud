@@ -15,13 +15,12 @@ RUN apt-get update && apt-get install -y \
     python3-venv \
     python3-distutils \
     python3-yaml \
-    cython \
     libffi-dev \
     && apt-get clean
 
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
-RUN pip install pyyaml==5.4.1
+RUN pip install cython
 
 COPY . .
 
