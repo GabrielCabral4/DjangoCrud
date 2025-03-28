@@ -18,10 +18,15 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     libpq-dev \
     python3-dev \
+    python3-pip \
+    python3-setuptools \
+    python3-wheel \
+    python3-cffi \
+    python3-venv \
     && apt-get clean \
     && pip install --upgrade pip \
     && pip install --upgrade "setuptools" "wheel" "cython" \
-    && pip install numpy==2.0.0 \
+    && pip install numpy==1.24.4 \
     && pip install django==5.1.7 \
     && pip install gunicorn==23.0.0 \
     && pip install psycopg2-binary==2.9.10 \
