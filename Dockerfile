@@ -2,6 +2,7 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
+# Instalar dependências do sistema
 RUN apt-get update && apt-get install -y \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
@@ -14,4 +15,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD ["gunicorn", "myCrud.wsgi:application", "--bind", "0.0.0.0:$PORT"]
+CMD ["gunicorn", "myCrud.wsgi:application", "--bind", "0.0.0.0:10000"]
