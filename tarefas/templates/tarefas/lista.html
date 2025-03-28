@@ -73,9 +73,12 @@
 
     <!-- Script de Drag-and-Drop -->
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const rows = document.querySelectorAll('tbody tr');
-      let dragSrcEl = null;
+    document.querySelectorAll('.btn-excluir').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            if (!confirm("Tem certeza que deseja excluir esta tarefa?")) {
+                e.preventDefault();
+            }
+        });
 
       function handleDragStart(e) {
         dragSrcEl = this;
@@ -130,6 +133,20 @@
         addDnDHandlers(row);
       });
 
+      function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            document.cookie.split(';').forEach(cookie => {
+                cookie = cookie.trim();
+                if (cookie.startsWith(name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                }
+            });
+        }
+        return cookieValue;
+}
+
+
       // Botão para salvar nova ordem
       const btnSalvarOrdem = document.querySelector('#btnSalvarOrdem');
       if (btnSalvarOrdem) {
@@ -145,7 +162,7 @@
           fetch("{% url 'atualizar_ordem_tarefas' %}", {
             method: 'POST',
             headers: {
-              'X-CSRFToken': '{{ csrf_token }}',
+              'X-CSRFToken': getCookie('csrftoken'),
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({ ordem: novaOrdem })
