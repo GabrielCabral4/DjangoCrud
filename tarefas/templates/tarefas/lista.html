@@ -28,6 +28,7 @@
                     <thead>
                         <tr class="bg-blue-100">
                             <th class="border p-3 text-left font-medium">Tarefa</th>
+                            <th class="border p-3 text-left font-medium">Descrição</th>
                             <th class="border p-3 text-left font-medium">Ações</th>
                         </tr>
                     </thead>
@@ -35,6 +36,7 @@
                         {% for tarefa in tarefas %}
                         <tr class="hover:bg-gray-50 transition duration-200">
                             <td class="border p-3">{{ tarefa.titulo }}</td>
+                            <td class="border p-3">{{ tarefa.descricao|default:"Sem descrição" }}</td>
                             <td class="border p-3 space-x-2">
                                 <a href="{% url 'editar_tarefa' tarefa.id %}" 
                                    class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300">
