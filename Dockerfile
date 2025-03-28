@@ -19,8 +19,8 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean
 
 RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
-RUN pip install cython
+RUN pip install cython 
+RUN pip install -r requirements.txt  
 
 COPY . .
 
