@@ -27,7 +27,9 @@ SECRET_KEY = 'django-insecure-b2j@6r_ofc9su79vt^&9u(tkl2^8yo6rot%3z=i0=n+b-_k9qy
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['djangocrud-1-cpgd.onrender.com',  # Substitua pelo domínio do seu projeto no Render
+    'localhost',
+    '127.0.0.1']
 
 
 # Application definition
@@ -81,8 +83,9 @@ WSGI_APPLICATION = 'myCrud.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgresql://postgres:postgres@localhost:5432/mysite',
-        conn_max_age=600
+        default=os.getenv('DATABASE_URL', 'postgresql://postgres:postgres@localhost:5432/mysite'),
+        conn_max_age=600,
+        ssl_require=True
     )
 }
 

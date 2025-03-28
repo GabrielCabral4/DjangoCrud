@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: myCrud
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn myCrud.wsgi:application
+    envVars:
+      - key: DEBUG
+        value: False
+      - key: DATABASE_URL
+        fromDatabase:
+          name: mysite-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: PYTHON_VERSION
+        value: 3.10.13
+      - key: WEB_CONCURRENCY
+        value: 4
+
+databases:
+  - name: mysite-db
+    databaseName: mysite
+    user: mysite
+    plan: free
