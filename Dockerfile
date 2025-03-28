@@ -1,29 +1,32 @@
 FROM python:3.10-slim
 
-# Instala dependências do sistema
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     libpq-dev \
     python3-dev \
+    gcc \
     && rm -rf /var/lib/apt/lists/*
 
-# Define diretório de trabalho
 WORKDIR /app
 
-# Cria e ativa ambiente virtual
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
-# Copia requirements primeiro
 COPY requirements.txt .
 
-# Instala dependências no ambiente virtual
 RUN pip install --upgrade pip \
-    && pip install setuptools wheel \
-    && pip install -r requirements.txt
+    && pip install --upgrade setuptools wheel \
+    && pip install numpy==2.2.3 \
+    && pip install django==5.1.7 \
+    && pip install gunicorn==23.0.0 \
+    && pip install psycopg2-binary==2.9.10 \
+    && pip install -r requirements.txt \
+    || (echo "Erro na instalação de dependências" \
+    && pip list \
+    && python --version \
+    && exit 1)
 
-# Copia o resto do projeto
 COPY . .
 
-# Define comando de execução
+# Comando de execução
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "myCrud.wsgi:application"]
