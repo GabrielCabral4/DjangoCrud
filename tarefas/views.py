@@ -56,7 +56,7 @@ def atualizar_ordem_tabela(request):
     ordem_ids = data.get('ordem', [])
 
     for index, tarefa_id in enumerate(ordem_ids):
-        tarefa = Tarefa.objects.get(id=id)
+        tarefa = Tarefa.objects.get(id=tarefa_id)
         tarefa.order = index
         tarefa.save()
 
