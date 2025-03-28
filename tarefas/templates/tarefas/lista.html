@@ -10,19 +10,15 @@
 </head>
 <body class="bg-gray-50 min-h-screen">
 
-    <!-- Container Principal -->
     <div class="container mx-auto px-6 py-8">
 
-        <!-- Título -->
         <div class="max-w-4xl mx-auto">
             <h1 class="text-4xl font-bold text-center text-blue-600 mb-8">Gerenciador de Tarefas</h1>
 
-            <!-- Botão Nova Tarefa -->
             <a href="{% url 'criar_tarefa' %}" class="bg-green-600 text-white px-6 py-3 rounded-full hover:bg-green-700 transition duration-300 inline-block mb-6 shadow-md">
                 + Nova Tarefa
             </a>
 
-            <!-- Tabela de Tarefas -->
             <div class="bg-white shadow-lg rounded-lg p-6">
                 <table class="table-fixed w-full border-collapse text-gray-700">
                     <thead>
@@ -35,8 +31,18 @@
                     <tbody>
                         {% for tarefa in tarefas %}
                         <tr class="hover:bg-gray-50 transition duration-200">
-                            <td class="border p-3 truncate">{{ tarefa.titulo }}</td>
-                            <td class="border p-3">{{ tarefa.descricao|default:"Sem descrição" }}</td>
+                            <!-- Se quiser truncar com reticências: -->
+                            <!-- <td class="border p-3 truncate"> -->
+                            <!-- Mas lembre de manter table-fixed e w-1/5 para funcionar bem. -->
+                
+                            <!-- Se quiser quebrar linha: -->
+                            <td class="border p-3 whitespace-normal break-words">
+                                {{ tarefa.titulo }}
+                            </td>
+                
+                            <td class="border p-3 whitespace-normal break-words">
+                                {{ tarefa.descricao|default:"Sem descrição" }}
+                            </td>
                             <td class="border p-3 text-right">
                                 <div class="flex justify-end space-x-2">
                                     <a href="{% url 'editar_tarefa' tarefa.id %}" 
@@ -53,6 +59,7 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                
 
                 <!-- Mensagem caso não haja tarefas -->
                 {% if not tarefas %}
