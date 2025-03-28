@@ -73,82 +73,47 @@
 
     <!-- Script de Drag-and-Drop -->
     <script>
-    document.querySelectorAll('.btn-excluir').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            if (!confirm("Tem certeza que deseja excluir esta tarefa?")) {
-                e.preventDefault();
-            }
-        });
+    document.addEventListener('DOMContentLoaded', () => {
+    const tbody = document.querySelector('tbody');
+    let dragSrcEl = null;
 
-      function handleDragStart(e) {
+    function handleDragStart(e) {
         dragSrcEl = this;
         e.dataTransfer.effectAllowed = 'move';
-        e.dataTransfer.setData('text/html', this.outerHTML);
+        e.dataTransfer.setData('text/plain', this.dataset.id);
         this.classList.add('opacity-50');
-      }
+    }
 
-      function handleDragOver(e) {
-        if (e.preventDefault) {
-          e.preventDefault(); // Permite drop
-        }
-        e.dataTransfer.dropEffect = 'move';
+    function handleDragOver(e) {
+        e.preventDefault();
         return false;
-      }
+    }
 
-      function handleDrop(e) {
-        if (e.stopPropagation) {
-          e.stopPropagation(); // Impede propagação
-        }
-
-        // Se soltou em outro <tr>
+    function handleDrop(e) {
+        e.preventDefault();
         if (dragSrcEl !== this) {
-          // Remove o elemento arrastado da posição original
-          this.parentNode.removeChild(dragSrcEl);
-          // Insere antes do "this"
-          this.insertAdjacentHTML('beforebegin', e.dataTransfer.getData('text/html'));
-
-          // Seleciona a nova linha inserida e remove a classe de opacidade
-          const droppedRow = this.previousSibling;
-          droppedRow.classList.remove('opacity-50');
-
-          // Reatribui os eventos ao novo elemento
-          addDnDHandlers(droppedRow);
+            const parent = tbody;
+            const next = this.nextSibling === dragSrcEl ? this.nextSibling.nextSibling : this.nextSibling;
+            parent.insertBefore(dragSrcEl, next);
         }
-        return false;
-      }
+    }
 
-      function handleDragEnd() {
+    function handleDragEnd() {
         this.classList.remove('opacity-50');
-      }
+    }
 
-      function addDnDHandlers(row) {
+    function addDnDHandlers(row) {
+        row.setAttribute('draggable', 'true');
         row.addEventListener('dragstart', handleDragStart, false);
         row.addEventListener('dragover', handleDragOver, false);
         row.addEventListener('drop', handleDrop, false);
         row.addEventListener('dragend', handleDragEnd, false);
-      }
+    }
 
-      rows.forEach((row) => {
-        row.setAttribute('draggable', 'true');
-        addDnDHandlers(row);
-      });
-
-      function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            document.cookie.split(';').forEach(cookie => {
-                cookie = cookie.trim();
-                if (cookie.startsWith(name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                }
-            });
-        }
-        return cookieValue;
-}
-
+    document.querySelectorAll('tbody tr').forEach(addDnDHandlers);
 
       // Botão para salvar nova ordem
-      const btnSalvarOrdem = document.querySelector('#btnSalvarOrdem');
+    const btnSalvarOrdem = document.querySelector('#btnSalvarOrdem');
       if (btnSalvarOrdem) {
         btnSalvarOrdem.addEventListener('click', () => {
           const novaOrdem = [];
@@ -162,7 +127,7 @@
           fetch("{% url 'atualizar_ordem_tarefas' %}", {
             method: 'POST',
             headers: {
-              'X-CSRFToken': getCookie('csrftoken'),
+              'X-CSRFToken': '{{ csrf_token }}',
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({ ordem: novaOrdem })
