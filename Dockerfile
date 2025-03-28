@@ -1,19 +1,21 @@
 FROM python:3.10-slim
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
-    pkg-config \
-    libcairo2-dev \
+    libpq-dev \
+    python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
 COPY requirements.txt .
 
-RUN pip install --upgrade pip && \
-    pip install -r requirements.txt -v --no-cache-dir || \
-    (echo "Erro na instalação de dependências" && cat requirements.txt && pip list && exit 1)
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir \
+    setuptools \
+    wheel \
+    && pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "seu_projeto.wsgi:application"]
