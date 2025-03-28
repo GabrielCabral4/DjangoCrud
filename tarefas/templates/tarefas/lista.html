@@ -27,28 +27,24 @@
                 <table class="w-full border-collapse text-gray-700">
                     <thead>
                         <tr class="bg-blue-100">
-                            <th class="border p-3 text-left font-medium w-[20%]">Tarefa</th>
-                            <th class="border p-3 text-left font-medium w-[60%]">Descrição</th>
-                            <th class="border p-3 text-right font-medium w-[20%] whitespace-nowrap">Ações</th>
+                            <th class="border p-3 text-left font-medium w-1/4">Tarefa</th>
+                            <th class="border p-3 text-left font-medium w-2/4">Descrição</th>
+                            <th class="border p-3 text-right font-medium w-1/4">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for tarefa in tarefas %}
                         <tr class="hover:bg-gray-50 transition duration-200">
-                            <td class="border p-3 max-w-[0] truncate">
-                                <span class="block truncate" title="{{ tarefa.titulo }}">
-                                    {{ tarefa.titulo }}
-                                </span>
-                            </td>
+                            <td class="border p-3 truncate">{{ tarefa.titulo }}</td>
                             <td class="border p-3">{{ tarefa.descricao|default:"Sem descrição" }}</td>
                             <td class="border p-3 text-right">
                                 <div class="flex justify-end space-x-2">
                                     <a href="{% url 'editar_tarefa' tarefa.id %}" 
-                                       class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition duration-300 text-sm">
+                                       class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300">
                                         Editar
                                     </a>
                                     <a href="{% url 'deletar_tarefa' tarefa.id %}" 
-                                       class="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition duration-300 text-sm">
+                                       class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300">
                                         Excluir
                                     </a>
                                 </div>
