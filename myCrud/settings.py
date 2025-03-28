@@ -22,15 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-b2j@6r_ofc9su79vt^&9u(tkl2^8yo6rot%3z=i0=n+b-_k9qy'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['djangocrud-1-cpgd.onrender.com',  # Substitua pelo domínio do seu projeto no Render
-    'localhost',
-    '127.0.0.1']
-
+ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS', 'localhost')]
 
 # Application definition
 
@@ -83,13 +80,10 @@ WSGI_APPLICATION = 'myCrud.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.getenv('DATABASE_URL', 'postgresql://postgres:postgres@localhost:5432/mysite'),
-        conn_max_age=600,
-        ssl_require=True
+        default='postgresql://meu_projeto_db_user:atbk7vnX2MmdFEx8HLM7GK5kHrB3vd1Z@dpg-cvj29truibrs739kiov0-a.oregon-postgres.render.com/meu_projeto_db',
+        conn_max_age=600
     )
 }
-
-
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
