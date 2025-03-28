@@ -6,8 +6,6 @@ RUN pip install numpy==1.24.4
 RUN pip install django==5.1.7
 RUN pip install gunicorn==23.0.0
 RUN pip install psycopg2-binary==2.9.10
-RUN pip install -r requirements.txt
-RUN pip install pyyaml==5.4.1
 
 WORKDIR /app
 
@@ -15,6 +13,10 @@ RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
 COPY requirements.txt .
+
+RUN pip install -r requirements.txt
+
+RUN pip install pyyaml==5.4.1
 
 RUN apt-get update && apt-get install -y \
     build-essential \
@@ -28,19 +30,8 @@ RUN apt-get update && apt-get install -y \
     python3-distutils \
     python3-yaml \
     cython \
-    && apt-get clean \
-    && pip install --upgrade pip \
-    && pip install --upgrade "setuptools==58.0.4" "wheel" "cython" \
-    && pip install numpy==1.24.4 \
-    && pip install django==5.1.7 \
-    && pip install gunicorn==23.0.0 \
-    && pip install psycopg2-binary==2.9.10 \
-    && pip install -r requirements.txt
-
-
-
+    && apt-get clean
 
 COPY . .
 
-# Comando de execução
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "myCrud.wsgi:application"]
