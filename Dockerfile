@@ -20,13 +20,13 @@ RUN apt-get update && apt-get install -y \
     python3-dev \
     && apt-get clean \
     && pip install --upgrade pip \
-    && pip install cython \
-    && pip install "setuptools<68" "wheel<0.40" \
+    && pip install --upgrade "setuptools" "wheel" "cython" \
     && pip install numpy==2.0.0 \
     && pip install django==5.1.7 \
     && pip install gunicorn==23.0.0 \
     && pip install psycopg2-binary==2.9.10 \
     && pip install -r requirements.txt
+
 
 
 
