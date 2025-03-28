@@ -16,6 +16,9 @@ COPY requirements.txt .
 
 RUN apt-get update && apt-get install -y build-essential libpq-dev \
     && pip install --upgrade pip \
+    && pip install cython \
+    && apt-get clean \
+    && pip install python3-dev \
     && pip install "setuptools<68" "wheel<0.40" \
     && pip install numpy==2.0.0 \
     && pip install django==5.1.7 \
