@@ -8,18 +8,16 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-# Copia os arquivos do projeto para o container
-COPY . /app
+COPY requirements.txt .
 
-# Atualiza o pip e instala as dependências do projeto
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt || \
+    (pip list && exit 1)
 
-# Define a variável de ambiente para o Django (ajuste conforme necessário)
+COPY . .
+
 ENV DJANGO_SETTINGS_MODULE=myCrud.settings
 
-# Expõe a porta que o Render irá usar (Render define a variável $PORT)
 EXPOSE $PORT
 
-# Comando para iniciar a aplicação (exemplo usando gunicorn)
 CMD gunicorn myCrud.wsgi:application --bind 0.0.0.0:$PORT
