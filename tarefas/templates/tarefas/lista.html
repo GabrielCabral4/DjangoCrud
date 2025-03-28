@@ -27,9 +27,9 @@
                 <table class="w-full border-collapse text-gray-700">
                     <thead>
                         <tr class="bg-blue-100">
-                            <th class="border p-3 text-left font-medium w-1/4">Tarefa</th>
-                            <th class="border p-3 text-left font-medium w-2/4">Descrição</th>
-                            <th class="border p-3 text-right font-medium w-1/4">Ações</th>
+                            <th class="border p-3 text-left font-medium w-1/5">Tarefa</th>
+                            <th class="border p-3 text-left font-medium w-3/5">Descrição</th>
+                            <th class="border p-3 text-right font-medium w-1/5">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -40,11 +40,11 @@
                             <td class="border p-3 text-right">
                                 <div class="flex justify-end space-x-2">
                                     <a href="{% url 'editar_tarefa' tarefa.id %}" 
-                                       class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300">
+                                       class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 flex items-center">
                                         Editar
                                     </a>
                                     <a href="{% url 'deletar_tarefa' tarefa.id %}" 
-                                       class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300">
+                                       class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300 flex items-center">
                                         Excluir
                                     </a>
                                 </div>
