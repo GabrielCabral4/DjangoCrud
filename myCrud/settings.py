@@ -27,7 +27,10 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS', 'localhost')]
+ALLOWED_HOSTS = [
+    'djangocrud-1-cpgd.onrender.com',
+    os.getenv('ALLOWED_HOSTS', 'localhost'),
+]
 
 # Application definition
 
@@ -80,7 +83,7 @@ WSGI_APPLICATION = 'myCrud.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgresql://meu_projeto_db_user:atbk7vnX2MmdFEx8HLM7GK5kHrB3vd1Z@dpg-cvj29truibrs739kiov0-a.oregon-postgres.render.com/meu_projeto_db',
+        default=os.getenv('DATABASE_URL', 'postgresql://meu_projeto_db_user:atbk7vnX2MmdFEx8HLM7GK5kHrB3vd1Z@dpg-cvj29truibrs739kiov0-a.oregon-postgres.render.com/meu_projeto_db'),
         conn_max_age=600
     )
 }
@@ -119,10 +122,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-if not DEBUG:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
@@ -133,3 +135,7 @@ TAILWIND_APP_NAME = 'theme'
 STATICFILES_DIRS = [
     BASE_DIR / 'tarefas/static',
 ]
+
+SECURE_SSL_REDIRECT = not DEBUG
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
