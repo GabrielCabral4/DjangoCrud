@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -9,16 +8,18 @@
     <link href="{% static 'tarefas/css/style.css' %}" rel="stylesheet">
 </head>
 <body class="bg-gray-50 min-h-screen">
-
+    <!-- Container Principal -->
     <div class="container mx-auto px-6 py-8">
-
+        <!-- Título -->
         <div class="max-w-4xl mx-auto">
             <h1 class="text-4xl font-bold text-center text-blue-600 mb-8">Gerenciador de Tarefas</h1>
 
+            <!-- Botão Nova Tarefa -->
             <a href="{% url 'criar_tarefa' %}" class="bg-green-600 text-white px-6 py-3 rounded-full hover:bg-green-700 transition duration-300 inline-block mb-6 shadow-md">
                 + Nova Tarefa
             </a>
 
+            <!-- Tabela de Tarefas -->
             <div class="bg-white shadow-lg rounded-lg p-6">
                 <table class="table-fixed w-full border-collapse text-gray-700">
                     <thead>
@@ -30,28 +31,23 @@
                     </thead>
                     <tbody>
                         {% for tarefa in tarefas %}
-                        <tr class="hover:bg-gray-50 transition duration-200">
-                            <!-- Se quiser truncar com reticências: -->
-                            <!-- <td class="border p-3 truncate"> -->
-                            <!-- Mas lembre de manter table-fixed e w-1/5 para funcionar bem. -->
-                
-                            <!-- Se quiser quebrar linha: -->
+                        <tr class="hover:bg-gray-50 transition duration-200" data-id="{{ tarefa.id }}">
                             <td class="border p-3 whitespace-normal break-words">
                                 {{ tarefa.titulo }}
                             </td>
-                
                             <td class="border p-3 whitespace-normal break-words">
                                 {{ tarefa.descricao|default:"Sem descrição" }}
                             </td>
                             <td class="border p-3 text-right">
                                 <div class="flex justify-end space-x-2">
-                                    <a href="{% url 'editar_tarefa' tarefa.id %}" 
-                                       class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 flex items-center">
+                                    <a href="{% url 'editar_tarefa' tarefa.id %}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 flex items-center">
                                         Editar
                                     </a>
-                                    <a href="{% url 'deletar_tarefa' tarefa.id %}" 
-                                       class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300 flex items-center">
+                                    <a href="{% url 'deletar_tarefa' tarefa.id %}" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300 flex items-center">
                                         Excluir
+                                    </a>
+                                    <a href="{% url 'fixar_tarefa' tarefa.id %}" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition duration-300 flex items-center">
+                                        {% if tarefa.pinned %}Desfixar{% else %}Fixar{% endif %}
                                     </a>
                                 </div>
                             </td>
@@ -59,7 +55,6 @@
                         {% endfor %}
                     </tbody>
                 </table>
-                
 
                 <!-- Mensagem caso não haja tarefas -->
                 {% if not tarefas %}
@@ -68,7 +63,103 @@
                 </div>
                 {% endif %}
             </div>
+            
+            <!-- Botão para salvar a nova ordem das tarefas -->
+            <button id="btnSalvarOrdem" class="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition duration-300 inline-block mt-4 shadow-md">
+                Salvar Nova Ordem
+            </button>
         </div>
     </div>
+
+    <!-- Script de Drag-and-Drop -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const rows = document.querySelectorAll('tbody tr');
+      let dragSrcEl = null;
+
+      function handleDragStart(e) {
+        dragSrcEl = this;
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/html', this.outerHTML);
+        this.classList.add('opacity-50');
+      }
+
+      function handleDragOver(e) {
+        if (e.preventDefault) {
+          e.preventDefault(); // Permite drop
+        }
+        e.dataTransfer.dropEffect = 'move';
+        return false;
+      }
+
+      function handleDrop(e) {
+        if (e.stopPropagation) {
+          e.stopPropagation(); // Impede propagação
+        }
+
+        // Se soltou em outro <tr>
+        if (dragSrcEl !== this) {
+          // Remove o elemento arrastado da posição original
+          this.parentNode.removeChild(dragSrcEl);
+          // Insere antes do "this"
+          this.insertAdjacentHTML('beforebegin', e.dataTransfer.getData('text/html'));
+
+          // Seleciona a nova linha inserida e remove a classe de opacidade
+          const droppedRow = this.previousSibling;
+          droppedRow.classList.remove('opacity-50');
+
+          // Reatribui os eventos ao novo elemento
+          addDnDHandlers(droppedRow);
+        }
+        return false;
+      }
+
+      function handleDragEnd() {
+        this.classList.remove('opacity-50');
+      }
+
+      function addDnDHandlers(row) {
+        row.addEventListener('dragstart', handleDragStart, false);
+        row.addEventListener('dragover', handleDragOver, false);
+        row.addEventListener('drop', handleDrop, false);
+        row.addEventListener('dragend', handleDragEnd, false);
+      }
+
+      rows.forEach((row) => {
+        row.setAttribute('draggable', 'true');
+        addDnDHandlers(row);
+      });
+
+      // Botão para salvar nova ordem
+      const btnSalvarOrdem = document.querySelector('#btnSalvarOrdem');
+      if (btnSalvarOrdem) {
+        btnSalvarOrdem.addEventListener('click', () => {
+          const novaOrdem = [];
+          document.querySelectorAll('tbody tr').forEach((tr) => {
+            const id = tr.getAttribute('data-id');
+            if (id) {
+              novaOrdem.push(id);
+            }
+          });
+          
+          fetch("{% url 'atualizar_ordem_tarefas' %}", {
+            method: 'POST',
+            headers: {
+              'X-CSRFToken': '{{ csrf_token }}',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ ordem: novaOrdem })
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.status === 'ok') {
+              alert('Ordem atualizada com sucesso!');
+            }
+          })
+          .catch(error => console.error(error));
+        });
+      }
+    });
+    </script>
 </body>
 </html>
