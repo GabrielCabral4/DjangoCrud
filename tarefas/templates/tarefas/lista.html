@@ -46,7 +46,7 @@
                                     <a href="{% url 'deletar_tarefa' tarefa.id %}" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300 flex items-center">
                                         Excluir
                                     </a>
-                                    <a href="{% url 'fixar_tarefa' tarefa.id %}" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition duration-300 flex items-center">
+                                    <a href="{% url 'fixar_tarefa' tarefa.id %}" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition duration-300 flex items-center !important">
                                         {% if tarefa.pinned %}Desfixar{% else %}Fixar{% endif %}
                                     </a>
                                 </div>
@@ -65,7 +65,7 @@
             </div>
             
             <!-- Botão para salvar a nova ordem das tarefas -->
-            <button id="btnSalvarOrdem" class="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition duration-300 inline-block mt-4 shadow-md">
+            <button id="btnSalvarOrdem" class="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition duration-300 inline-block mt-4 shadow-md !important">
                 Salvar Nova Ordem
             </button>
         </div>
