@@ -27,9 +27,9 @@
                 <table class="w-full border-collapse text-gray-700">
                     <thead>
                         <tr class="bg-blue-100">
-                            <th class="border p-3 text-left font-medium">Tarefa</th>
-                            <th class="border p-3 text-left font-medium">Descrição</th>
-                            <th class="border p-3 text-left font-medium">Ações</th>
+                            <th class="border p-3 text-left font-medium w-1/4">Tarefa</th>
+                            <th class="border p-3 text-left font-medium w-2/4">Descrição</th>
+                            <th class="border p-3 text-left font-medium w-1/4 text-right">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -37,13 +37,13 @@
                         <tr class="hover:bg-gray-50 transition duration-200">
                             <td class="border p-3">{{ tarefa.titulo }}</td>
                             <td class="border p-3">{{ tarefa.descricao|default:"Sem descrição" }}</td>
-                            <td class="border p-3 space-x-2">
+                            <td class="border p-3 text-right space-x-2">
                                 <a href="{% url 'editar_tarefa' tarefa.id %}" 
-                                   class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300">
+                                   class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 inline-block">
                                     Editar
                                 </a>
                                 <a href="{% url 'deletar_tarefa' tarefa.id %}" 
-                                   class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300">
+                                   class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300 inline-block">
                                     Excluir
                                 </a>
                             </td>
