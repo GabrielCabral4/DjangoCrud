@@ -1,11 +1,6 @@
 FROM python:3.10-slim
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    libpq-dev \
-    python3-dev \
-    gcc \
-    && rm -rf /var/lib/apt/lists/*
+RUN pip install --upgrade pip setuptools wheel cython
 
 WORKDIR /app
 
@@ -23,9 +18,11 @@ RUN apt-get update && apt-get install -y \
     python3-wheel \
     python3-cffi \
     python3-venv \
+    python3-distutils \
+    python3-yaml \
     && apt-get clean \
     && pip install --upgrade pip \
-    && pip install --upgrade "setuptools" "wheel" "cython" \
+    && pip install --upgrade "setuptools==58.0.4" "wheel" "cython" \
     && pip install numpy==1.24.4 \
     && pip install django==5.1.7 \
     && pip install gunicorn==23.0.0 \
