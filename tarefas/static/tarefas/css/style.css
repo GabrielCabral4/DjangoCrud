@@ -620,6 +620,18 @@
   .origin-top-right {
     transform-origin: top right;
   }
+  .fixar-btn {
+    background-color: #10b981 !important; /* Verde */
+  }
+  .fixar-btn:hover {
+    background-color: #059669 !important; /* Verde escuro */
+  }
+  .salvar-btn {
+    background-color: #2563eb !important; /* Azul */
+  }
+  .salvar-btn:hover {
+    background-color: #1d4ed8 !important; /* Azul escuro */
+  }
   .-translate-full {
     --tw-translate-x: -100%;
     --tw-translate-y: -100%;
