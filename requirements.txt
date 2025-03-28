@@ -14,7 +14,6 @@ Django==5.1.7
 django-debug-toolbar==5.1.0
 django-tailwind==3.8.0
 gunicorn==23.0.0
-gyp==0.1
 h11==0.14.0
 httplib2==0.20.2
 idna==3.10
