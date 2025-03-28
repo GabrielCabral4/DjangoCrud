@@ -1,6 +1,13 @@
 FROM python:3.10-slim
 
-RUN pip install --upgrade pip setuptools wheel cython
+RUN pip install --upgrade pip
+RUN pip install --upgrade setuptools==58.0.4 wheel cython
+RUN pip install numpy==1.24.4
+RUN pip install django==5.1.7
+RUN pip install gunicorn==23.0.0
+RUN pip install psycopg2-binary==2.9.10
+RUN pip install -r requirements.txt
+RUN pip install pyyaml==5.4.1
 
 WORKDIR /app
 
@@ -20,6 +27,7 @@ RUN apt-get update && apt-get install -y \
     python3-venv \
     python3-distutils \
     python3-yaml \
+    cython \
     && apt-get clean \
     && pip install --upgrade pip \
     && pip install --upgrade "setuptools==58.0.4" "wheel" "cython" \
