@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'tarefas',
     'tailwind',
     'theme',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -139,3 +140,7 @@ STATICFILES_DIRS = [
 SECURE_SSL_REDIRECT = not DEBUG
 SESSION_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_SECURE = not DEBUG
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'listar_tarefas'
+LOGOUT_REDIRECT_URL = 'login'
