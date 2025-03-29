@@ -3,10 +3,10 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Gerenciador de Tarefas</title>
     <link href="{% static 'tarefas/css/style.css' %}" rel="stylesheet">
-
+    <!-- Estilos inline para garantir a aplicação correta das cores -->
     <style>
         .fixar-btn {
             background-color: #10b981 !important; /* Verde */
@@ -20,22 +20,33 @@
         .salvar-btn:hover {
             background-color: #1d4ed8 !important; /* Azul escuro */
         }
+        
+        /* Estilos responsivos adicionais */
+        @media (max-width: 640px) {
+            .acoes-col {
+                width: auto !important;
+            }
+            .mobile-button {
+                font-size: 0.75rem !important;
+                padding: 0.25rem 0.5rem !important;
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
     <!-- Container Principal -->
-    <div class="container mx-auto px-6 py-8">
+    <div class="container mx-auto px-2 sm:px-6 py-4 sm:py-8">
         <!-- Título -->
         <div class="max-w-4xl mx-auto">
-            <h1 class="text-4xl font-bold text-center text-blue-600 mb-8">Gerenciador de Tarefas</h1>
+            <h1 class="text-3xl sm:text-4xl font-bold text-center text-blue-600 mb-4 sm:mb-8">Gerenciador de Tarefas</h1>
 
             <!-- Botão Nova Tarefa -->
-            <a href="{% url 'criar_tarefa' %}" class="bg-green-600 text-white px-6 py-3 rounded-full hover:bg-green-700 transition duration-300 inline-block mb-6 shadow-md">
+            <a href="{% url 'criar_tarefa' %}" class="bg-green-600 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-full hover:bg-green-700 transition duration-300 inline-block mb-4 sm:mb-6 shadow-md">
                 + Nova Tarefa
             </a>
 
-            <!-- Tabela de Tarefas -->
-            <div class="bg-white shadow-lg rounded-lg p-6">
+            <!-- Versão Desktop da Tabela -->
+            <div class="hidden sm:block bg-white shadow-lg rounded-lg p-4 sm:p-6">
                 <table class="table-fixed w-full border-collapse text-gray-700">
                     <thead>
                         <tr class="bg-blue-100">
@@ -55,13 +66,25 @@
                             </td>
                             <td class="border p-3 text-right">
                                 <div class="flex justify-end space-x-2">
-                                    <a href="{% url 'editar_tarefa' tarefa.id %}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 flex items-center">
+                                    <a href="{% url 'editar_tarefa' tarefa.id %}" 
+                                       style="background-color: #3b82f6 !important;" 
+                                       class="text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 flex items-center"
+                                       onmouseover="this.style.backgroundColor='#2563eb';" 
+                                       onmouseout="this.style.backgroundColor='#3b82f6';">
                                         Editar
                                     </a>
-                                    <a href="{% url 'deletar_tarefa' tarefa.id %}" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300 flex items-center">
+                                    <a href="{% url 'deletar_tarefa' tarefa.id %}" 
+                                       style="background-color: #ef4444 !important;" 
+                                       class="text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300 flex items-center"
+                                       onmouseover="this.style.backgroundColor='#dc2626';" 
+                                       onmouseout="this.style.backgroundColor='#ef4444';">
                                         Excluir
                                     </a>
-                                    <a href="{% url 'fixar_tarefa' tarefa.id %}" class="fixar-btn bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition duration-300 flex items-center">
+                                    <a href="{% url 'fixar_tarefa' tarefa.id %}" 
+                                       style="background-color: #10b981 !important;" 
+                                       class="text-white px-4 py-2 rounded-md hover:bg-green-600 transition duration-300 flex items-center"
+                                       onmouseover="this.style.backgroundColor='#059669';" 
+                                       onmouseout="this.style.backgroundColor='#10b981';">
                                         {% if tarefa.pinned %}Desfixar{% else %}Fixar{% endif %}
                                     </a>
                                 </div>
@@ -71,7 +94,7 @@
                     </tbody>
                 </table>
 
-                <!-- Mensagem caso não haja tarefas -->
+                <!-- Mensagem caso não haja tarefas (desktop) -->
                 {% if not tarefas %}
                 <div class="bg-yellow-100 border-l-4 border-yellow-500 p-4 text-yellow-700 mt-6 rounded-md">
                     Nenhuma tarefa encontrada. Cadastre sua primeira tarefa!
@@ -79,82 +102,145 @@
                 {% endif %}
             </div>
             
+            <!-- Versão Mobile (Cards) -->
+            <div class="sm:hidden space-y-4">
+                {% for tarefa in tarefas %}
+                <div class="bg-white shadow-lg rounded-lg p-4" data-id="{{ tarefa.id }}">
+                    <h3 class="font-bold text-lg mb-2">{{ tarefa.titulo }}</h3>
+                    <p class="text-gray-600 mb-4">{{ tarefa.descricao|default:"Sem descrição" }}</p>
+                    <div class="grid grid-cols-3 gap-1">
+                        <a href="{% url 'editar_tarefa' tarefa.id %}" 
+                           style="background-color: #3b82f6 !important;" 
+                           class="text-white text-center text-xs px-2 py-2 rounded-md transition duration-300 flex items-center justify-center"
+                           onmouseover="this.style.backgroundColor='#2563eb';" 
+                           onmouseout="this.style.backgroundColor='#3b82f6';">
+                            Editar
+                        </a>
+                        <a href="{% url 'deletar_tarefa' tarefa.id %}" 
+                           style="background-color: #ef4444 !important;" 
+                           class="text-white text-center text-xs px-2 py-2 rounded-md transition duration-300 flex items-center justify-center"
+                           onmouseover="this.style.backgroundColor='#dc2626';" 
+                           onmouseout="this.style.backgroundColor='#ef4444';">
+                            Excluir
+                        </a>
+                        <a href="{% url 'fixar_tarefa' tarefa.id %}" 
+                           style="background-color: #10b981 !important;" 
+                           class="text-white text-center text-xs px-2 py-2 rounded-md transition duration-300 flex items-center justify-center"
+                           onmouseover="this.style.backgroundColor='#059669';" 
+                           onmouseout="this.style.backgroundColor='#10b981';">
+                            {% if tarefa.pinned %}Desfixar{% else %}Fixar{% endif %}
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+                
+                <!-- Mensagem caso não haja tarefas (mobile) -->
+                {% if not tarefas %}
+                <div class="bg-yellow-100 border-l-4 border-yellow-500 p-4 text-yellow-700 rounded-md">
+                    Nenhuma tarefa encontrada. Cadastre sua primeira tarefa!
+                </div>
+                {% endif %}
+            </div>
+            
             <!-- Botão para salvar a nova ordem das tarefas -->
-            <button id="btnSalvarOrdem" class="salvar-btn bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition duration-300 inline-block mt-4 shadow-md">
+            <button id="btnSalvarOrdem" 
+                   style="background-color: #2563eb !important;" 
+                   class="text-white px-4 py-2 sm:px-6 sm:py-3 rounded-full transition duration-300 inline-block mt-4 shadow-md"
+                   onmouseover="this.style.backgroundColor='#1d4ed8';" 
+                   onmouseout="this.style.backgroundColor='#2563eb';">
                 Salvar Nova Ordem
             </button>
         </div>
     </div>
+    
     <!-- Script de Drag-and-Drop -->
     <script>
     document.addEventListener('DOMContentLoaded', () => {
-    const tbody = document.querySelector('tbody');
-    let dragSrcEl = null;
+        // Seleciona a tabela correta com base no dispositivo
+        const isMobile = window.innerWidth < 640;
+        const draggableItems = isMobile ? 
+            document.querySelectorAll('.sm\\:hidden > div[data-id]') : 
+            document.querySelectorAll('tbody tr');
+            
+        let dragSrcEl = null;
 
-    function handleDragStart(e) {
-        dragSrcEl = this;
-        e.dataTransfer.effectAllowed = 'move';
-        e.dataTransfer.setData('text/plain', this.dataset.id);
-        this.classList.add('opacity-50');
-    }
-
-    function handleDragOver(e) {
-        e.preventDefault();
-        return false;
-    }
-
-    function handleDrop(e) {
-        e.preventDefault();
-        if (dragSrcEl !== this) {
-            const parent = tbody;
-            const next = this.nextSibling === dragSrcEl ? this.nextSibling.nextSibling : this.nextSibling;
-            parent.insertBefore(dragSrcEl, next);
+        function handleDragStart(e) {
+            dragSrcEl = this;
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', this.dataset.id);
+            this.classList.add('opacity-50');
         }
-    }
 
-    function handleDragEnd() {
-        this.classList.remove('opacity-50');
-    }
+        function handleDragOver(e) {
+            e.preventDefault();
+            return false;
+        }
 
-    function addDnDHandlers(row) {
-        row.setAttribute('draggable', 'true');
-        row.addEventListener('dragstart', handleDragStart, false);
-        row.addEventListener('dragover', handleDragOver, false);
-        row.addEventListener('drop', handleDrop, false);
-        row.addEventListener('dragend', handleDragEnd, false);
-    }
-
-    document.querySelectorAll('tbody tr').forEach(addDnDHandlers);
-
-      // Botão para salvar nova ordem
-    const btnSalvarOrdem = document.querySelector('#btnSalvarOrdem');
-      if (btnSalvarOrdem) {
-        btnSalvarOrdem.addEventListener('click', () => {
-          const novaOrdem = [];
-          document.querySelectorAll('tbody tr').forEach((tr) => {
-            const id = tr.getAttribute('data-id');
-            if (id) {
-              novaOrdem.push(id);
+        function handleDrop(e) {
+            e.preventDefault();
+            if (dragSrcEl !== this) {
+                const parent = isMobile ? 
+                    document.querySelector('.sm\\:hidden') : 
+                    document.querySelector('tbody');
+                const next = this.nextSibling === dragSrcEl ? this.nextSibling.nextSibling : this.nextSibling;
+                parent.insertBefore(dragSrcEl, next);
             }
-          });
-          
-          fetch("{% url 'atualizar_ordem_tarefas' %}", {
-            method: 'POST',
-            headers: {
-              'X-CSRFToken': '{{ csrf_token }}',
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ ordem: novaOrdem })
-          })
-          .then(response => response.json())
-          .then(data => {
-            if (data.status === 'ok') {
-              alert('Ordem atualizada com sucesso!');
-            }
-          })
-          .catch(error => console.error(error));
+            return false;
+        }
+
+        function handleDragEnd() {
+            this.classList.remove('opacity-50');
+        }
+
+        function addDnDHandlers(item) {
+            item.setAttribute('draggable', 'true');
+            item.addEventListener('dragstart', handleDragStart, false);
+            item.addEventListener('dragover', handleDragOver, false);
+            item.addEventListener('drop', handleDrop, false);
+            item.addEventListener('dragend', handleDragEnd, false);
+        }
+
+        draggableItems.forEach(addDnDHandlers);
+
+        // Botão para salvar nova ordem
+        const btnSalvarOrdem = document.querySelector('#btnSalvarOrdem');
+        if (btnSalvarOrdem) {
+            btnSalvarOrdem.addEventListener('click', () => {
+                const novaOrdem = [];
+                // Seleciona elementos ativos com base no dispositivo
+                const items = isMobile ? 
+                    document.querySelectorAll('.sm\\:hidden > div[data-id]') : 
+                    document.querySelectorAll('tbody tr');
+                    
+                items.forEach((item) => {
+                    const id = item.getAttribute('data-id');
+                    if (id) {
+                        novaOrdem.push(id);
+                    }
+                });
+                
+                fetch("{% url 'atualizar_ordem_tarefas' %}", {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ ordem: novaOrdem })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'ok') {
+                        alert('Ordem atualizada com sucesso!');
+                    }
+                })
+                .catch(error => console.error(error));
+            });
+        }
+        
+        // Detectar mudanças no tamanho da tela
+        window.addEventListener('resize', function() {
+            location.reload();
         });
-      }
     });
     </script>
 </body>
