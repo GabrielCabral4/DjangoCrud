@@ -71,7 +71,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-            ],
+            ],  
         },
     },
 ]
@@ -141,6 +141,5 @@ SECURE_SSL_REDIRECT = not DEBUG
 SESSION_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_SECURE = not DEBUG
 
-LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'listar_tarefas'
 LOGOUT_REDIRECT_URL = 'login'
