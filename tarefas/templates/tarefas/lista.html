@@ -179,11 +179,8 @@
         function handleDrop(e) {
             e.preventDefault();
             if (dragSrcEl !== this) {
-                const parent = isMobile ? 
-                    document.querySelector('.sm\\:hidden') : 
-                    document.querySelector('tbody');
-                const next = this.nextSibling === dragSrcEl ? this.nextSibling.nextSibling : this.nextSibling;
-                parent.insertBefore(dragSrcEl, next);
+                const parent = isMobile ? document.querySelector('.sm\\:hidden') : document.querySelector('tbody');
+                parent.insertBefore(dragSrcEl, this.nextElementSibling);
             }
             return false;
         }
