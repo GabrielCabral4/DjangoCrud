@@ -20,7 +20,33 @@
         .salvar-btn:hover {
             background-color: #1d4ed8 !important; /* Azul escuro */
         }
-        
+        /* Estilos para versão desktop (lista de tarefas em div) */
+        .desktop-task {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #fff;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 1rem;
+        }
+        .desktop-task > div {
+            overflow-wrap: break-word;
+        }
+        .desktop-task .titulo {
+            width: 20%;
+            font-weight: 500;
+        }
+        .desktop-task .descricao {
+            width: 60%;
+        }
+        .desktop-task .acoes {
+            width: 20%;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+        }
         /* Estilos responsivos adicionais */
         @media (max-width: 640px) {
             .acoes-col {
@@ -45,55 +71,41 @@
                 + Nova Tarefa
             </a>
 
-            <!-- Versão Desktop da Tabela -->
-            <div class="hidden sm:block bg-white shadow-lg rounded-lg p-4 sm:p-6">
-                <table class="table-fixed w-full border-collapse text-gray-700">
-                    <thead>
-                        <tr class="bg-blue-100">
-                            <th class="border p-3 text-left font-medium w-1/5">Tarefa</th>
-                            <th class="border p-3 text-left font-medium w-3/5">Descrição</th>
-                            <th class="border p-3 text-right font-medium w-1/5">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for tarefa in tarefas %}
-                        <tr class="hover:bg-gray-50 transition duration-200" data-id="{{ tarefa.id }}">
-                            <td class="border p-3 whitespace-normal break-words">
-                                {{ tarefa.titulo }}
-                            </td>
-                            <td class="border p-3 whitespace-normal break-words">
-                                {{ tarefa.descricao|default:"Sem descrição" }}
-                            </td>
-                            <td class="border p-3 text-right">
-                                <div class="flex justify-end space-x-2">
-                                    <a href="{% url 'editar_tarefa' tarefa.id %}" 
-                                       style="background-color: #3b82f6 !important;" 
-                                       class="text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300 flex items-center"
-                                       onmouseover="this.style.backgroundColor='#2563eb';" 
-                                       onmouseout="this.style.backgroundColor='#3b82f6';">
-                                        Editar
-                                    </a>
-                                    <a href="{% url 'deletar_tarefa' tarefa.id %}" 
-                                       style="background-color: #ef4444 !important;" 
-                                       class="text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300 flex items-center"
-                                       onmouseover="this.style.backgroundColor='#dc2626';" 
-                                       onmouseout="this.style.backgroundColor='#ef4444';">
-                                        Excluir
-                                    </a>
-                                    <a href="{% url 'fixar_tarefa' tarefa.id %}" 
-                                       style="background-color: #10b981 !important;" 
-                                       class="text-white px-4 py-2 rounded-md hover:bg-green-600 transition duration-300 flex items-center"
-                                       onmouseover="this.style.backgroundColor='#059669';" 
-                                       onmouseout="this.style.backgroundColor='#10b981';">
-                                        {% if tarefa.pinned %}Desfixar{% else %}Fixar{% endif %}
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-
+            <!-- Versão Desktop: Lista de Tarefas em Bloco -->
+            <div class="hidden sm:block" id="desktopTaskList">
+                {% for tarefa in tarefas %}
+                <div class="desktop-task" data-id="{{ tarefa.id }}">
+                    <div class="titulo">
+                        {{ tarefa.titulo }}
+                    </div>
+                    <div class="descricao">
+                        {{ tarefa.descricao|default:"Sem descrição" }}
+                    </div>
+                    <div class="acoes">
+                        <a href="{% url 'editar_tarefa' tarefa.id %}" 
+                           style="background-color: #3b82f6 !important;" 
+                           class="text-white px-3 py-2 rounded-md hover:bg-blue-600 transition duration-300 flex items-center"
+                           onmouseover="this.style.backgroundColor='#2563eb';" 
+                           onmouseout="this.style.backgroundColor='#3b82f6';">
+                            Editar
+                        </a>
+                        <a href="{% url 'deletar_tarefa' tarefa.id %}" 
+                           style="background-color: #ef4444 !important;" 
+                           class="text-white px-3 py-2 rounded-md hover:bg-red-600 transition duration-300 flex items-center"
+                           onmouseover="this.style.backgroundColor='#dc2626';" 
+                           onmouseout="this.style.backgroundColor='#ef4444';">
+                            Excluir
+                        </a>
+                        <a href="{% url 'fixar_tarefa' tarefa.id %}" 
+                           style="background-color: #10b981 !important;" 
+                           class="text-white px-3 py-2 rounded-md hover:bg-green-600 transition duration-300 flex items-center"
+                           onmouseover="this.style.backgroundColor='#059669';" 
+                           onmouseout="this.style.backgroundColor='#10b981';">
+                            {% if tarefa.pinned %}Desfixar{% else %}Fixar{% endif %}
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
                 <!-- Mensagem caso não haja tarefas (desktop) -->
                 {% if not tarefas %}
                 <div class="bg-yellow-100 border-l-4 border-yellow-500 p-4 text-yellow-700 mt-6 rounded-md">
@@ -103,7 +115,7 @@
             </div>
             
             <!-- Versão Mobile (Cards) -->
-            <div class="sm:hidden space-y-4">
+            <div class="sm:hidden space-y-4" id="mobileTaskList">
                 {% for tarefa in tarefas %}
                 <div class="bg-white shadow-lg rounded-lg p-4" data-id="{{ tarefa.id }}">
                     <h3 class="font-bold text-lg mb-2">{{ tarefa.titulo }}</h3>
@@ -133,7 +145,6 @@
                     </div>
                 </div>
                 {% endfor %}
-                
                 <!-- Mensagem caso não haja tarefas (mobile) -->
                 {% if not tarefas %}
                 <div class="bg-yellow-100 border-l-4 border-yellow-500 p-4 text-yellow-700 rounded-md">
@@ -156,11 +167,12 @@
     <!-- Script de Drag-and-Drop -->
     <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // Seleciona a tabela correta com base no dispositivo
+        // Verifica se estamos no mobile ou desktop
         const isMobile = window.innerWidth < 640;
+        // Seleciona os itens draggables conforme a versão
         const draggableItems = isMobile ? 
-            document.querySelectorAll('.sm\\:hidden > div[data-id]') : 
-            document.querySelectorAll('tbody tr');
+            document.querySelectorAll('#mobileTaskList > div[data-id]') : 
+            document.querySelectorAll('#desktopTaskList > .desktop-task');
             
         let dragSrcEl = null;
 
@@ -169,6 +181,7 @@
             e.dataTransfer.effectAllowed = 'move';
             e.dataTransfer.setData('text/plain', this.dataset.id);
             this.classList.add('opacity-50');
+            console.log('Drag Iniciado:', this.dataset.id);
         }
 
         function handleDragOver(e) {
@@ -179,8 +192,10 @@
         function handleDrop(e) {
             e.preventDefault();
             if (dragSrcEl !== this) {
-                const parent = isMobile ? document.querySelector('.sm\\:hidden') : document.querySelector('tbody');
+                // Insere antes do próximo elemento (garante que seja um elemento real)
+                const parent = isMobile ? document.querySelector('#mobileTaskList') : document.querySelector('#desktopTaskList');
                 parent.insertBefore(dragSrcEl, this.nextElementSibling);
+                console.log('Drop:', dragSrcEl.dataset.id, 'movido para após', this.dataset.id);
             }
             return false;
         }
@@ -189,25 +204,23 @@
             this.classList.remove('opacity-50');
         }
 
-        function addDnDHandlers(item) {
+        // Adiciona os handlers de drag-and-drop para cada item
+        draggableItems.forEach(item => {
             item.setAttribute('draggable', 'true');
             item.addEventListener('dragstart', handleDragStart, false);
             item.addEventListener('dragover', handleDragOver, false);
             item.addEventListener('drop', handleDrop, false);
             item.addEventListener('dragend', handleDragEnd, false);
-        }
-
-        draggableItems.forEach(addDnDHandlers);
+        });
 
         // Botão para salvar nova ordem
         const btnSalvarOrdem = document.querySelector('#btnSalvarOrdem');
         if (btnSalvarOrdem) {
             btnSalvarOrdem.addEventListener('click', () => {
                 const novaOrdem = [];
-                // Seleciona elementos ativos com base no dispositivo
                 const items = isMobile ? 
-                    document.querySelectorAll('.sm\\:hidden > div[data-id]') : 
-                    document.querySelectorAll('tbody tr');
+                    document.querySelectorAll('#mobileTaskList > div[data-id]') : 
+                    document.querySelectorAll('#desktopTaskList > .desktop-task');
                     
                 items.forEach((item) => {
                     const id = item.getAttribute('data-id');
@@ -234,7 +247,7 @@
             });
         }
         
-        // Detectar mudanças no tamanho da tela
+        // Recarrega a página ao redimensionar para ajustar entre mobile e desktop
         window.addEventListener('resize', function() {
             location.reload();
         });
