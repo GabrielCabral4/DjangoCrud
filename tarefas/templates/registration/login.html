@@ -6,13 +6,22 @@
     <title>Login</title>
     <link href="{% static 'tarefas/css/style.css' %}" rel="stylesheet">
 </head>
-<body>
-    <h1>Login</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Entrar</button>
-    </form>
-    <p>Não possui uma conta? <a href="{% url 'register' %}">Registre-se aqui</a></p>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
+        <h1 class="text-2xl font-bold mb-6 text-center">Login</h1>
+        <form method="post" class="space-y-4">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
+                Entrar
+            </button>
+        </form>
+        <p class="mt-4 text-center">
+            Não possui uma conta? 
+            <a href="{% url 'register' %}" class="text-blue-500 hover:underline">
+                Registre-se aqui
+            </a>
+        </p>
+    </div>
 </body>
 </html>

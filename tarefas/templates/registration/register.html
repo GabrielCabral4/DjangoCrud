@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -7,13 +6,22 @@
     <title>Registro</title>
     <link href="{% static 'tarefas/css/style.css' %}" rel="stylesheet">
 </head>
-<body>
-    <h1>Registro de Usuário</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Registrar</button>
-    </form>
-    <p>Já possui uma conta? <a href="{% url 'login' %}">Faça login aqui</a></p>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
+        <h1 class="text-2xl font-bold mb-6 text-center">Registro de Usuário</h1>
+        <form method="post" class="space-y-4">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">
+                Registrar
+            </button>
+        </form>
+        <p class="mt-4 text-center">
+            Já possui uma conta? 
+            <a href="{% url 'login' %}" class="text-blue-500 hover:underline">
+                Faça login aqui
+            </a>
+        </p>
+    </div>
 </body>
 </html>
