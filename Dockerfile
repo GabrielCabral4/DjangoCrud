@@ -13,6 +13,6 @@ RUN pip install --no-cache-dir --upgrade pip
 RUN pip install --no-cache-dir --no-build-isolation PyYAML==5.4.1
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+COPY . /app
 
 CMD ["gunicorn", "myCrud.wsgi:application", "--bind", "0.0.0.0:10000"]
