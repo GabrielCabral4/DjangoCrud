@@ -3,30 +3,24 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login</title>
     <link href="{% static 'tarefas/css/style.css' %}" rel="stylesheet">
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    <div class="form-box login">
-        <h2 class="title animation" style="--i: 17; --j: 0">Login</h2>
+    <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
+        <h1 class="text-2xl font-bold mb-6 text-center">Login</h1>
         <form method="post" class="space-y-4">
             {% csrf_token %}
-            <div class="input-box animation" style="--i: 18; --j: 1">
-                {{ form.username }}
-                <label for="id_username">Usuário</label>
-                <i class="bx bxs-user"></i>
-            </div>
-            <div class="input-box animation" style="--i: 19; --j: 2">
-                {{ form.password }}
-                <label for="id_password">Senha</label>
-                <i class="bx bxs-lock-alt"></i>
-            </div>
-            <button type="submit" class="btn animation" style="--i: 21; --j: 4">Entrar</button>
+            {{ form.as_p }}
+            <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
+                Entrar
+            </button>
         </form>
         <p class="mt-4 text-center">
-            Não possui uma conta?
-            <a href="{% url 'register' %}" class="text-blue-500 hover:underline">Registre-se aqui</a>
+            Não possui uma conta? 
+            <a href="{% url 'register' %}" class="text-blue-500 hover:underline">
+                Registre-se aqui
+            </a>
         </p>
     </div>
 </body>
