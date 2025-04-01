@@ -672,6 +672,10 @@
   .animate-none {
     animation: none;
   }
+  .animation {
+    animation: fadeIn 1s ease-in-out;
+    animation-delay: var(--i, 0s);
+}
   .touch-pinch-zoom {
     --tw-pinch-zoom: pinch-zoom;
     touch-action: var(--tw-pan-x,) var(--tw-pan-y,) var(--tw-pinch-zoom,);
@@ -2368,4 +2372,12 @@
 @property --tw-contain-style {
   syntax: "*";
   inherits: false;
+}
+@keyframes fadeIn {
+  0% {
+      opacity: 0;
+  }
+  100% {
+      opacity: 1;
+  }
 }
