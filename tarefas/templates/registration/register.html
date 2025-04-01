@@ -8,20 +8,35 @@
     <link href="{% static 'tarefas/css/style.css' %}" rel="stylesheet">
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
-        <h1 class="text-2xl font-bold mb-6 text-center">Registro de Usuário</h1>
+    <div class="form-box register">
+        <h2 class="title animation" style="--i: 17; --j: 0">Registro de Usuário</h2>
         <form method="post" class="space-y-4">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded">
-                Registrar
-            </button>
+            <div class="input-box animation" style="--i: 18; --j: 1">
+                {{ form.username }}
+                <label for="id_username">Usuário</label>
+                <i class="bx bxs-user"></i>
+            </div>
+            <div class="input-box animation" style="--i: 19; --j: 2">
+                {{ form.email }}
+                <label for="id_email">Email</label>
+                <i class="bx bxs-envelope"></i>
+            </div>
+            <div class="input-box animation" style="--i: 20; --j: 3">
+                {{ form.password1 }}
+                <label for="id_password1">Senha</label>
+                <i class="bx bxs-lock-alt"></i>
+            </div>
+            <div class="input-box animation" style="--i: 21; --j: 4">
+                {{ form.password2 }}
+                <label for="id_password2">Confirme a senha</label>
+                <i class="bx bxs-lock-alt"></i>
+            </div>
+            <button type="submit" class="btn animation" style="--i: 22; --j: 5">Registrar</button>
         </form>
         <p class="mt-4 text-center">
-            Já possui uma conta? 
-            <a href="{% url 'login' %}" class="text-blue-500 hover:underline">
-                Faça login aqui
-            </a>
+            Já possui uma conta?
+            <a href="{% url 'login' %}" class="text-blue-500 hover:underline">Faça login aqui</a>
         </p>
     </div>
 </body>
