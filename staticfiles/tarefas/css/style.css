@@ -669,9 +669,6 @@
   .transform-none {
     transform: none;
   }
-  .animate-none {
-    animation: none;
-  }
   .animation {
     animation: fadeIn 1s ease-in-out;
     animation-delay: var(--i, 0s);
