@@ -10,7 +10,7 @@ click==8.1.8
 cookiecutter==2.6.0
 cryptography==44.0.1
 dj-database-url==2.3.0
-Django==5.1.7
+Django==5.1.12
 django-debug-toolbar==5.1.0
 django-tailwind==3.8.0
 gunicorn==23.0.0
